@@ -18,6 +18,11 @@
 
 <!-- restaurant list -->
 <div class="container mt-5">
+  {{#unless restaurants}}
+  <div class="row">
+    <h3 class="not-found mx-auto">抱歉，找不到名稱與「<span class='keyword'>{{keyword}}</span>」相關的餐廳。</h3>
+  </div>
+  {{/unless}}
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
       <div class="card-columns">
