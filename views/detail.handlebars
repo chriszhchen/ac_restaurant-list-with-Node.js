@@ -38,7 +38,9 @@
         style="max-width: 600px;">
       <div class="function-buttons d-flex justify-content-center mb-4">
         <a class="btn btn-secondary mr-1" href="/restaurants/{{ restaurant._id }}/edit">編輯</a>
-        <button type="button" class="btn btn-danger">刪除</button>
+        <form action="/restaurants/{{ restaurant._id }}/delete" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger">刪除</button>
+        </form>
         <a class="btn btn-success ml-1" href="/">回到首頁</a>
       </div>
     </div>

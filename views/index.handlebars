@@ -47,7 +47,9 @@
           <div class="function-buttons d-flex justify-content-end mb-4">
             <a class="btn btn-secondary mr-1" href="/restaurants/{{ this._id }}/edit">編輯</a>
             <a class="btn btn-info mr-1" href="/restaurants/{{ this._id }}">詳細資訊</a>
-            <button type="button" class="btn btn-danger">刪除</button>
+            <form action="/restaurants/{{ this._id }}/delete" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger">刪除</button>
+            </form>
           </div>
         </div>
         {{/each}}

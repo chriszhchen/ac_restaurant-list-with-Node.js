@@ -90,7 +90,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
 app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const id = req.params.restaurant_id
   const editedRestaurant = req.body
-  Restaurant.findById(id)
+  return Restaurant.findById(id)
     .then(restaurant => {
       for (const key in editedRestaurant) {
         restaurant[key] = editedRestaurant[key]
@@ -102,6 +102,13 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
 })
 
 // DELETE function
+app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
+})
 
 // start and listen the server
 app.listen(port, () => {
