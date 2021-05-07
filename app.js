@@ -53,7 +53,6 @@ app.get('/restaurants/new', (req, res) => {
 app.post('/restaurants', (req, res) => {
   const newRestaurant = req.body
 
-  // 直接新增資料到資料庫
   return Restaurant.create({
     name: newRestaurant.name,
     name_en: newRestaurant.name_en,
@@ -72,17 +71,35 @@ app.post('/restaurants', (req, res) => {
 // READ function and render detail page
 app.get('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
-  Restaurant.findById(id)
+  return Restaurant.findById(id)
     .lean()
-    .then(restaurant => {
-      res.render('detail', { restaurant })
-    })
+    .then(restaurant => res.render('detail', { restaurant }))
     .catch(err => console.log(err))
 })
 
 // render edit page
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  return Restaurant.findById(id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(err => console.log(err))
+})
 
 // UPDATE function
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const id = req.params.restaurant_id
+  const editedRestaurant = req.body
+  Restaurant.findById(id)
+    .then(restaurant => {
+      for (const key in editedRestaurant) {
+        restaurant[key] = editedRestaurant[key]
+      }
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(err => console.log(err))
+})
 
 // DELETE function
 

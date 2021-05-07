@@ -37,9 +37,9 @@
       <img class="rounded mx-auto d-block mb-4 w-100" src="{{ restaurant.image }}" alt="{{ restaurant.name }}"
         style="max-width: 600px;">
       <div class="function-buttons d-flex justify-content-center mb-4">
-        <a class="btn btn-primary mr-1" href="/">回到首頁</a>
-        <a class="btn btn-secondary mr-1" href="">編輯</a>
+        <a class="btn btn-secondary mr-1" href="/restaurants/{{ restaurant._id }}/edit">編輯</a>
         <button type="button" class="btn btn-danger">刪除</button>
+        <a class="btn btn-success ml-1" href="/">回到首頁</a>
       </div>
     </div>
   </div>
