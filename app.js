@@ -52,7 +52,7 @@ app.get('/restaurants/new', (req, res) => {
 // CREATE function
 app.post('/restaurants', (req, res) => {
   const newRestaurant = req.body
-  console.log(newRestaurant)
+
   // 直接新增資料到資料庫
   return Restaurant.create({
     name: newRestaurant.name,
