@@ -31,15 +31,17 @@ npm install
 npm i nodemon
 ```
 
-3.啟動MongoDB資料庫
-4.啟動伺服器
+4.啟動MongoDB資料庫<br/>
+
+5.啟動伺服器
 ```
 npm run dev
 ```
 
 終端機顯示 ```The server is listening on http://localhost:3000``` 代表伺服器成功啟動<br/>
 顯示 ```mongodb connected!``` 代表伺服器成功與資料庫連接 <br/>
-5.新增種子資料
+<br/>
+6.新增種子資料
 ```
 npm run seed
 ```
