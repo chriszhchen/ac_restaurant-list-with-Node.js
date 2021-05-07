@@ -29,7 +29,18 @@
   </header>
   {{!-- partial template here --}}
   {{{ body }}}
-
+  <script>
+    const dataPanel = document.querySelector('#data-panel')
+    dataPanel.addEventListener('click', event => {
+      if (event.target.matches('.delete-button')) {
+        const target = event.target
+        const modalTitle = document.querySelector('#modal-title')
+        const confirmForm = document.querySelector('#confirm-form')
+        modalTitle.innerText = target.dataset.name
+        confirmForm.action = `/restaurants/${target.dataset.id}/delete`
+      }
+    })
+  </script>
   <script src="/javascripts/jquery-3.6.0.min.js"></script>
   <script src="/javascripts/popper.js"></script>
   <script src="/javascripts/bootstrap.js"></script>

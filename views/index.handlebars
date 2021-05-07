@@ -19,14 +19,14 @@
 <!-- restaurant list -->
 <div class="container mt-5">
 
-  {{#unless restaurants}}
+  {{#if noResult}}
   <div class="row">
     <h3 class="not-found mx-auto">抱歉，找不到名稱與「<span class='keyword'>{{keyword}}</span>」相關的餐廳。</h3>
   </div>
-  {{/unless}}
+  {{/if}}
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
-      <div class="row">
+      <div class="row" id="data-panel">
         {{#each restaurants}}
         <div class="col-12 col-sm-6 col-lg-4">
           <a href="/restaurants/{{ this._id }}" class="text-secondary">
@@ -47,9 +47,8 @@
           <div class="function-buttons d-flex justify-content-end mb-4">
             <a class="btn btn-secondary mr-1" href="/restaurants/{{ this._id }}/edit">編輯</a>
             <a class="btn btn-info mr-1" href="/restaurants/{{ this._id }}">詳細資訊</a>
-            <form action="/restaurants/{{ this._id }}/delete" method="POST" style="display: inline;">
-              <button type="submit" class="btn btn-danger">刪除</button>
-            </form>
+            <button type="button" class="btn btn-danger delete-button" data-toggle="modal"
+              data-target="#restaurantModal" data-name="{{ this.name }}" data-id="{{ this._id }}">刪除</button>
           </div>
         </div>
         {{/each}}
@@ -58,5 +57,28 @@
   </div>
   <div class="row create-btn my-3">
     <a href="/restaurants/new" class="btn btn-primary btn-lg mx-auto my-5">新增餐廳</a>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="restaurantModal" tabindex="-1" role="dialog" aria-labelledby="restaurantModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        確定要刪除此筆餐廳檔案？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <form action="/restaurants/:id/delete" method="POST" style="display: inline;" id="confirm-form">
+          <button type="submit" class="btn btn-primary">確定</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

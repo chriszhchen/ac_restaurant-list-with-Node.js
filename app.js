@@ -23,6 +23,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+
 // --- route setting ---
 
 // render index page
@@ -37,10 +38,14 @@ app.get('/search', (req, res) => {
   Restaurant.find()
     .lean()
     .then(restaurants => {
+      let noResult = false
       const filteredRestaurants = restaurants.filter(restaurant => {
         return restaurant.name.toLowerCase().includes(req.query.keyword.trim().toLowerCase())
       })
-      res.render('index', { restaurants: filteredRestaurants, keyword: req.query.keyword })
+      if (filteredRestaurants.length === 0) {
+        noResult = true
+      }
+      res.render('index', { restaurants: filteredRestaurants, noResult, keyword: req.query.keyword })
     })
     .catch(err => console.log(err))
 })
@@ -104,6 +109,7 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
 // DELETE function
 app.post('/restaurants/:restaurant_id/delete', (req, res) => {
   const id = req.params.restaurant_id
+
   return Restaurant.findById(id)
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
