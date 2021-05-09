@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
     .catch(err => console.log(err))
 })
 // render search results
-app.get('/search', (req, res) => {
+app.get('/restaurants/search', (req, res) => {
   Restaurant.find()
     .lean()
     .then(restaurants => {
@@ -97,9 +97,7 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const editedRestaurant = req.body
   return Restaurant.findById(id)
     .then(restaurant => {
-      for (const key in editedRestaurant) {
-        restaurant[key] = editedRestaurant[key]
-      }
+      Object.assign(restaurant, editedRestaurant)
       return restaurant.save()
     })
     .then(() => res.redirect(`/restaurants/${id}`))
