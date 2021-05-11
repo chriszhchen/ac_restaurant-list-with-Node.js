@@ -2,11 +2,9 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const Restaurant = require('./models/restaurant.js')
+// const Restaurant = require('./models/restaurant.js')
 const methodOverride = require('method-override')
-
-const app = express()
-const port = 3000
+const routes = require('./routes')
 
 // modules setting
 mongoose.connect('mongodb://localhost/restaurant_list', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -19,6 +17,8 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+const app = express()
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
@@ -26,96 +26,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 // --- route setting ---
-
-// render index page
-app.get('/', (req, res) => {
-  Restaurant.find()
-    .lean()
-    .then(restaurants => res.render('index', { restaurants }))
-    .catch(err => console.log(err))
-})
-// render search results
-app.get('/restaurants/search', (req, res) => {
-  Restaurant.find()
-    .lean()
-    .then(restaurants => {
-      let noResult = false
-      const filteredRestaurants = restaurants.filter(restaurant => {
-        return restaurant.name.toLowerCase().includes(req.query.keyword.trim().toLowerCase())
-      })
-      if (filteredRestaurants.length === 0) {
-        noResult = true
-      }
-      res.render('index', { restaurants: filteredRestaurants, noResult, keyword: req.query.keyword })
-    })
-    .catch(err => console.log(err))
-})
-
-// render create page
-app.get('/restaurants/new', (req, res) => {
-  res.render('new')
-})
-// CREATE function
-app.post('/restaurants', (req, res) => {
-  const newRestaurant = req.body
-
-  return Restaurant.create({
-    name: newRestaurant.name,
-    name_en: newRestaurant.name_en,
-    category: newRestaurant.category,
-    image: newRestaurant.image,
-    location: newRestaurant.location,
-    phone: newRestaurant.phone,
-    google_map: newRestaurant.google_map,
-    rating: newRestaurant.rating,
-    description: newRestaurant.description
-  })
-    .then(res.redirect('/'))
-    .catch(err => console.log(err))
-})
-
-// READ function and render detail page
-app.get('/restaurants/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  return Restaurant.findById(id)
-    .lean()
-    .then(restaurant => res.render('detail', { restaurant }))
-    .catch(err => console.log(err))
-})
-
-// render edit page
-app.get('/restaurants/:restaurant_id/edit', (req, res) => {
-  const id = req.params.restaurant_id
-  return Restaurant.findById(id)
-    .lean()
-    .then(restaurant => res.render('edit', { restaurant }))
-    .catch(err => console.log(err))
-})
-
-// UPDATE function
-app.put('/restaurants/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  const editedRestaurant = req.body
-  return Restaurant.findById(id)
-    .then(restaurant => {
-      Object.assign(restaurant, editedRestaurant)
-      return restaurant.save()
-    })
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(err => console.log(err))
-})
-
-// DELETE function
-app.delete('/restaurants/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-
-  return Restaurant.findById(id)
-    .then(restaurant => restaurant.remove())
-    .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
-})
+app.use(routes)
 
 // start and listen the server
-app.listen(port, () => {
-  console.log(`The server is listening on http://localhost:${port}`)
+app.listen(3000, () => {
+  console.log('The server is listening on http://localhost:3000')
 })
