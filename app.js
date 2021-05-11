@@ -1,9 +1,9 @@
 // include express and define related variable
 const express = require('express')
 const exphbs = require('express-handlebars')
-// const restaurantData = require('./restaurant.json') // 改為從資料庫拿
 const mongoose = require('mongoose')
 const Restaurant = require('./models/restaurant.js')
+const methodOverride = require('method-override')
 
 const app = express()
 const port = 3000
@@ -23,6 +23,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // --- route setting ---
 
@@ -92,7 +93,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
 })
 
 // UPDATE function
-app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+app.put('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   const editedRestaurant = req.body
   return Restaurant.findById(id)
@@ -105,7 +106,7 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
 })
 
 // DELETE function
-app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+app.delete('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
 
   return Restaurant.findById(id)

@@ -37,7 +37,7 @@
         const modalTitle = document.querySelector('#modal-title')
         const confirmForm = document.querySelector('#confirm-form')
         modalTitle.innerText = target.dataset.name
-        confirmForm.action = `/restaurants/${target.dataset.id}/delete`
+        confirmForm.action = `/restaurants/${target.dataset.id}?_method=DELETE`
       }
     })
   </script>
