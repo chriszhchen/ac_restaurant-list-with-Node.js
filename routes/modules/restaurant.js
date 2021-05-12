@@ -19,6 +19,16 @@ router.get('/restaurants/search', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// render sort results
+router.get('/restaurants/sort', (req, res) => {
+  const sort = req.query.sort
+  Restaurant.find()
+    .lean()
+    .sort(sort)
+    .then(restaurants => res.render('index', { restaurants, sort }))
+    .catch(err => console.log(err))
+})
+
 // render create page
 router.get('/restaurants/new', (req, res) => {
   res.render('new')
