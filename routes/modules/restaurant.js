@@ -4,12 +4,13 @@ const Restaurant = require('../../models/restaurant')
 
 // render search results
 router.get('/restaurants/search', (req, res) => {
+  const keyword = req.query.keyword.trim().toLowerCase()
   Restaurant.find()
     .lean()
     .then(restaurants => {
       let noResult = false
       const filteredRestaurants = restaurants.filter(restaurant => {
-        return restaurant.name.toLowerCase().includes(req.query.keyword.trim().toLowerCase())
+        return restaurant.name.toLowerCase().includes(keyword) || restaurant.category.toLowerCase().includes(keyword)
       })
       if (filteredRestaurants.length === 0) {
         noResult = true
