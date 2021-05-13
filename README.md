@@ -1,6 +1,6 @@
 # 簡易餐廳清單
 利用Node.js + Express打造的美食餐廳網站
-![index image](https://github.com/chriszychen/ac_restaurant-list/blob/main/publice/image/index.PNG)
+![index image](https://github.com/chriszychen/ac_restaurant-list/blob/main/public/image/index.PNG)
 ## Features - 專案功能描述
 1. 使用者可以總覽所有餐廳的名稱、分類、評分
 2. 使用者可以使用中文關鍵字對餐廳名稱進行搜尋
