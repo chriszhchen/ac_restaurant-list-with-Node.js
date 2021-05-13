@@ -21,11 +21,11 @@ router.get('/restaurants/search', (req, res) => {
 
 // render sort results
 router.get('/restaurants/sort', (req, res) => {
-  const sort = req.query.sort
+  const sortMethod = req.query.sort_method
   Restaurant.find()
     .lean()
-    .sort(sort)
-    .then(restaurants => res.render('index', { restaurants, sort }))
+    .sort(sortMethod)
+    .then(restaurants => res.render('index', { restaurants, sortMethod }))
     .catch(err => console.log(err))
 })
 
@@ -36,20 +36,16 @@ router.get('/restaurants/new', (req, res) => {
 // CREATE function
 router.post('/restaurants', (req, res) => {
   const newRestaurant = req.body
-
-  return Restaurant.create({
-    name: newRestaurant.name,
-    name_en: newRestaurant.name_en,
-    category: newRestaurant.category,
-    image: newRestaurant.image,
-    location: newRestaurant.location,
-    phone: newRestaurant.phone,
-    google_map: newRestaurant.google_map,
-    rating: newRestaurant.rating,
-    description: newRestaurant.description
-  })
-    .then(res.redirect('/'))
-    .catch(err => console.log(err))
+  let validationError = false
+  if (!restaurantValidation(newRestaurant)) {
+    // 回傳輸入資料錯誤提示
+    validationError = true
+    res.render('new', { validationError })
+  } else {
+    return Restaurant.create({ newRestaurant })
+      .then(res.redirect('/'))
+      .catch(err => console.log(err))
+  }
 })
 
 // READ function and render detail page
@@ -73,14 +69,24 @@ router.get('/restaurants/:restaurant_id/edit', (req, res) => {
 // UPDATE function
 router.put('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
-  const editedRestaurant = req.body
-  return Restaurant.findById(id)
-    .then(restaurant => {
-      Object.assign(restaurant, editedRestaurant)
-      return restaurant.save()
-    })
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(err => console.log(err))
+  const editedRestaurant = Object.assign({ _id: id }, req.body)
+
+  let validationError = false
+  if (!restaurantValidation(editedRestaurant)) {
+    // 回傳輸入資料錯誤提示
+    validationError = true
+    // editedRestaurant
+    res.render('edit', { restaurant: editedRestaurant, validationError })
+  } else {
+    return Restaurant.findById(id)
+      .then(restaurant => {
+        Object.assign(restaurant, editedRestaurant)
+        console.log(restaurant)
+        return restaurant.save()
+      })
+      .then(() => res.redirect(`/restaurants/${id}`))
+      .catch(err => console.log(err))
+  }
 })
 
 // DELETE function
@@ -94,3 +100,22 @@ router.delete('/restaurants/:restaurant_id', (req, res) => {
 })
 
 module.exports = router
+
+function restaurantValidation(restaurant) {
+  // Required validation
+  for (const key in restaurant) {
+    if (key !== 'name_en') {
+      if (!restaurant[key].length) return false
+    }
+  }
+  // URL validation
+  const urlRegex = /https:\/\/.+/
+  if (!urlRegex.test(restaurant.image) || !urlRegex.test(restaurant.google_map)) return false
+  // Phone validation
+  const phoneRegex = /[0-9]{2} [0-9]{4} [0-9]{4}/
+  if (!phoneRegex.test(restaurant.phone)) return false
+  // Rating validation
+  if (Number(restaurant.rating) < 0 || Number(restaurant.rating) > 5) return false
+  // all validation pass
+  return true
+}

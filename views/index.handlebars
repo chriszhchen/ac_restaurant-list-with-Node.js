@@ -16,8 +16,8 @@
   </div>
   <form class="d-flex" name="sort-form" action="/restaurants/sort" method="GET">
     <div class="form-group sort-dropdown align-self-center">
-      <select name="sort" class="form-control btn-light" id='inputType' onchange="document.forms['sort-form'].submit()"
-        style="cursor: pointer;">
+      <select name="sort_method" class="form-control btn-light" id='inputType'
+        onchange="document.forms['sort-form'].submit()" style="cursor: pointer;">
         <option value="_id" selected disabled>排序選擇</option>
         <option value="name" {{#if (eq sort 'name' )}} selected {{/if}}>名稱</option>
         <option value="category" {{#if (eq sort 'category' )}} selected {{/if}}>類別</option>

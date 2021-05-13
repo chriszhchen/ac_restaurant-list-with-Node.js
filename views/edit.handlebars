@@ -4,6 +4,11 @@
   </div>
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
+      {{#if validationError}}
+      <div class="alert alert-danger" role="alert">
+        輸入資料格式有誤！
+      </div>
+      {{/if}}
       <form action="/restaurants/{{ restaurant._id }}?_method=PUT" method="POST">
         <div class="form-group">
           <label for="name">餐廳名稱</label>
