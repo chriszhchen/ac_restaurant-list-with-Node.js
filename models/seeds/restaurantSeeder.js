@@ -1,11 +1,11 @@
 const Restaurant = require('../restaurant.js')
-const restaurantData = require('../../restaurant.json').results
+const restaurantData = require('./restaurant.json').results
 const db = require('../../config/mongoose')
 
 db.once('open', () => {
   console.log('mongodb connected!')
-  restaurantData.forEach(restaurant => {
-    Restaurant.create({
+  const restaurants = restaurantData.map(restaurant => {
+    return {
       name: restaurant.name,
       name_en: restaurant.name_en,
       category: restaurant.category,
@@ -15,7 +15,15 @@ db.once('open', () => {
       google_map: restaurant.google_map,
       rating: restaurant.rating,
       description: restaurant.description
-    })
+    }
   })
-  console.log('Seeder Done!')
+  Restaurant.create(restaurants)
+    .then(() => {
+      console.log('seeder done!')
+      db.close()
+    })
+    .then(() => {
+      console.log('mongodb connection closed!')
+    })
+
 })

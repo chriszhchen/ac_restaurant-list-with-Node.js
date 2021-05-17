@@ -16,13 +16,13 @@
   </div>
   <form class="d-flex" name="sort-form" action="/restaurants/sort" method="GET">
     <div class="form-group sort-dropdown align-self-center">
-      <select name="sort_method" class="form-control btn-light" id='inputType'
-        onchange="document.forms['sort-form'].submit()" style="cursor: pointer;">
-        <option value="_id" selected disabled>排序選擇</option>
-        <option value="name" {{#if (eq sort 'name' )}} selected {{/if}}>名稱</option>
-        <option value="category" {{#if (eq sort 'category' )}} selected {{/if}}>類別</option>
-        <option value="location" {{#if (eq sort 'location' )}} selected {{/if}}>地區</option>
-        <option value="-rating" {{#if (eq sort '-rating' )}} selected {{/if}}>評比(高到低)</option>
+      <select name="sort_method" class="form-control btn-light" id='inputType' onchange="submit()"
+        style="cursor: pointer;">
+        <option value="_id" selected hidden>選擇排序</option>
+        <option value="name" {{#if (eq sortMethod 'name' )}} selected {{/if}}>名稱</option>
+        <option value="category" {{#if (eq sortMethod 'category' )}} selected {{/if}}>類別</option>
+        <option value="location" {{#if (eq sortMethod 'location' )}} selected {{/if}}>地區</option>
+        <option value="-rating" {{#if (eq sortMethod '-rating' )}} selected {{/if}}>評比(高到低)</option>
       </select>
     </div>
   </form>

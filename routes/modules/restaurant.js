@@ -43,7 +43,7 @@ router.post('/restaurants', (req, res) => {
     validationError = true
     res.render('new', { validationError })
   } else {
-    return Restaurant.create({ newRestaurant })
+    return Restaurant.create(newRestaurant)
       .then(res.redirect('/'))
       .catch(err => console.log(err))
   }
@@ -76,13 +76,11 @@ router.put('/restaurants/:restaurant_id', (req, res) => {
   if (!restaurantValidation(editedRestaurant)) {
     // 回傳輸入資料錯誤提示
     validationError = true
-    // editedRestaurant
     res.render('edit', { restaurant: editedRestaurant, validationError })
   } else {
     return Restaurant.findById(id)
       .then(restaurant => {
         Object.assign(restaurant, editedRestaurant)
-        console.log(restaurant)
         return restaurant.save()
       })
       .then(() => res.redirect(`/restaurants/${id}`))
@@ -110,10 +108,10 @@ function restaurantValidation(restaurant) {
     }
   }
   // URL validation
-  const urlRegex = /https:\/\/.+/
+  const urlRegex = /[Hh][Tt][Tt][Pp][Ss]?:\/\/.+/
   if (!urlRegex.test(restaurant.image) || !urlRegex.test(restaurant.google_map)) return false
   // Phone validation
-  const phoneRegex = /[0-9]{2} [0-9]{4} [0-9]{4}/
+  const phoneRegex = /^[0-9]{2}-[0-9]{4}-[0-9]{4}$|^09[0-9]{2}-[0-9]{6}$/
   if (!phoneRegex.test(restaurant.phone)) return false
   // Rating validation
   if (Number(restaurant.rating) < 0 || Number(restaurant.rating) > 5) return false
