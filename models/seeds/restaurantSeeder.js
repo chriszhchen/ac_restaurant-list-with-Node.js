@@ -20,10 +20,10 @@ db.once('open', () => {
   Restaurant.create(restaurants)
     .then(() => {
       console.log('seeder done!')
-      db.close()
+      return db.close()
     })
     .then(() => {
-      console.log('mongodb connection closed!')
+      console.log('mongodb disconnected!')
     })
-
+    .catch(err => console.log(err))
 })

@@ -3,7 +3,7 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 // render search results
-router.get('/restaurants/search', (req, res) => {
+router.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
   Restaurant.find()
     .lean()
@@ -21,7 +21,7 @@ router.get('/restaurants/search', (req, res) => {
 })
 
 // render sort results
-router.get('/restaurants/sort', (req, res) => {
+router.get('/sort', (req, res) => {
   const sortMethod = req.query.sort_method
   Restaurant.find()
     .lean()
@@ -31,11 +31,11 @@ router.get('/restaurants/sort', (req, res) => {
 })
 
 // render create page
-router.get('/restaurants/new', (req, res) => {
+router.get('/new', (req, res) => {
   res.render('new')
 })
 // CREATE function
-router.post('/restaurants', (req, res) => {
+router.post('', (req, res) => {
   const newRestaurant = req.body
   let validationError = false
   if (!restaurantValidation(newRestaurant)) {
@@ -44,13 +44,13 @@ router.post('/restaurants', (req, res) => {
     res.render('new', { validationError })
   } else {
     return Restaurant.create(newRestaurant)
-      .then(res.redirect('/'))
+      .then(() => res.redirect('/'))
       .catch(err => console.log(err))
   }
 })
 
 // READ function and render detail page
-router.get('/restaurants/:restaurant_id', (req, res) => {
+router.get('/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
     .lean()
@@ -59,7 +59,7 @@ router.get('/restaurants/:restaurant_id', (req, res) => {
 })
 
 // render edit page
-router.get('/restaurants/:restaurant_id/edit', (req, res) => {
+router.get('/:restaurant_id/edit', (req, res) => {
   const id = req.params.restaurant_id
   return Restaurant.findById(id)
     .lean()
@@ -68,7 +68,7 @@ router.get('/restaurants/:restaurant_id/edit', (req, res) => {
 })
 
 // UPDATE function
-router.put('/restaurants/:restaurant_id', (req, res) => {
+router.put('/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   const editedRestaurant = Object.assign({ _id: id }, req.body)
 
@@ -89,7 +89,7 @@ router.put('/restaurants/:restaurant_id', (req, res) => {
 })
 
 // DELETE function
-router.delete('/restaurants/:restaurant_id', (req, res) => {
+router.delete('/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
 
   return Restaurant.findById(id)
