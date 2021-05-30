@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
 const User = require('../../models/user')
 
 // render login page
@@ -8,8 +9,10 @@ router.get('/login', (req, res) => {
 })
 
 // handle the login
-router.post('/login', (req, res) => {
-})
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/users/login'
+}))
 
 // render register page
 router.get('/register', (req, res) => {
