@@ -5,6 +5,10 @@ const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const routes = require('./routes')
 const usePassport = require('./config/passport')
 require('./config/mongoose')
@@ -12,12 +16,13 @@ require('./config/mongoose')
 // modules setting
 
 const app = express()
+const PORT = process.env.PORT
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main', helpers: { eq: function (v1, v2) { return v1 === v2 } } }))
 app.set('view engine', 'handlebars')
 
 app.use(session({
-  secret: 'TheSecretForRestaurant',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
@@ -41,6 +46,6 @@ app.use((req, res, next) => {
 app.use(routes)
 
 // start and listen the server
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('The server is listening on http://localhost:3000')
 })
