@@ -29,7 +29,9 @@
     <div class="banner"></div>
   </header>
   {{!-- partial template here --}}
-  {{{ body }}}
+  <div class="container-fluid bg-light">
+    {{{ body }}}
+  </div>
   <script>
     const dataPanel = document.querySelector('#data-panel')
     dataPanel.addEventListener('click', event => {

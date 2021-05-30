@@ -68,6 +68,10 @@ header {
   white-space:nowrap;
 }
 
+.login-card {
+  margin-top: -15vh;
+}
+
 .restaurant-category {
   color: #666666;
   font-size: 0.8rem;
