@@ -19,8 +19,8 @@ router.get('/register', (req, res) => {
 // handle the register
 router.post('/register', (req, res) => {
   const { email, password, confirmPassword } = req.body
-  let { name } = req.body
-  if (!name) name = '我'
+  const name = req.body.name || '我'
+
   User.findOne({ email })
     .then(user => {
       if (user) {
