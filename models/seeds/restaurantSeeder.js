@@ -52,6 +52,6 @@ db.once('open', async () => {
   } catch (error) {
     console.log(error)
   }
-  console.log('seeder done.')
+  console.log('Seeder done.')
   process.exit()
 })

@@ -1,14 +1,17 @@
 # 簡易餐廳清單
 利用Node.js + Express打造的美食餐廳網站
+![login image](https://github.com/chriszychen/ac_restaurant-list/blob/main/public/image/login.PNG)
 ![index image](https://github.com/chriszychen/ac_restaurant-list/blob/main/public/image/index.PNG)
 ## Features - 專案功能描述
-1. 使用者可以總覽所有餐廳的名稱、分類、評分
-2. 使用者可以使用中文關鍵字對餐廳名稱進行搜尋
-3. 使用者可以使用排序選單對餐廳依不同項目進行排序
-4. 使用者可以點擊任一餐廳的照片或詳細資訊查看該餐廳的詳細資訊，如地址、電話、簡介以及Google map連結
-5. 使用者可以點擊按鈕新增餐廳
-6. 使用者可以點擊編輯按鈕修改任一餐廳內容
-7. 使用者可以點擊刪除按鈕刪除任一餐廳
+1. 可以使用自訂名字、Email和密碼進行註冊
+2. 可以使用註冊好的Email或是使用Facebook進行登入
+3. 可以總覽自己建立的所有餐廳之名稱、分類、評分
+4. 可以使用中文關鍵字對餐廳名稱或分類進行搜尋
+5. 可以使用排序選單對餐廳依不同項目進行排序
+6. 可以點擊自己建立的餐廳的照片或詳細資訊查看該餐廳的詳細資訊，如地址、電話、簡介以及Google map連結
+7. 可以點擊按鈕新增餐廳
+8. 可以點擊編輯按鈕修改自己建立的餐廳內容
+9. 可以點擊刪除按鈕刪除自己建立的餐廳
 
 ## Prerequisites - 環境建置與需求
 
