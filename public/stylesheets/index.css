@@ -68,8 +68,8 @@ header {
   white-space:nowrap;
 }
 
-.login-card {
-  margin-top: -15vh;
+.login-card, .register-card {
+  margin-top: -20vh;
 }
 
 .restaurant-category {
