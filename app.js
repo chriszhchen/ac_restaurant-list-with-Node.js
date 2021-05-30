@@ -27,6 +27,11 @@ app.use(methodOverride('_method'))
 
 usePassport(app)
 
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 // --- route setting ---
 app.use(routes)
 
