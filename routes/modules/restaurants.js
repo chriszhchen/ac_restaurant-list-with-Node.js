@@ -4,8 +4,9 @@ const Restaurant = require('../../models/restaurant')
 
 // render search results
 router.get('/search', (req, res) => {
+  const userId = req.user._id
   const keyword = req.query.keyword.trim().toLowerCase()
-  Restaurant.find()
+  Restaurant.find({ userId })
     .lean()
     .then(restaurants => {
       let noResult = false
@@ -22,8 +23,9 @@ router.get('/search', (req, res) => {
 
 // render sort results
 router.get('/sort', (req, res) => {
+  const userId = req.user._id
   const sortMethod = req.query.sort_method
-  Restaurant.find()
+  Restaurant.find({ userId })
     .lean()
     .sort(sortMethod)
     .then(restaurants => res.render('index', { restaurants, sortMethod }))
@@ -36,7 +38,8 @@ router.get('/new', (req, res) => {
 })
 // CREATE function
 router.post('', (req, res) => {
-  const newRestaurant = req.body
+  const userId = req.user._id
+  const newRestaurant = Object.assign({ userId }, req.body)
   let validationError = false
   if (!restaurantValidation(newRestaurant)) {
     // 回傳輸入資料錯誤提示
@@ -51,8 +54,9 @@ router.post('', (req, res) => {
 
 // READ function and render detail page
 router.get('/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  return Restaurant.findById(id)
+  const userId = req.user._id
+  const _id = req.params.restaurant_id
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('detail', { restaurant }))
     .catch(err => console.log(err))
@@ -60,8 +64,9 @@ router.get('/:restaurant_id', (req, res) => {
 
 // render edit page
 router.get('/:restaurant_id/edit', (req, res) => {
-  const id = req.params.restaurant_id
-  return Restaurant.findById(id)
+  const userId = req.user._id
+  const _id = req.params.restaurant_id
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
     .catch(err => console.log(err))
@@ -69,8 +74,9 @@ router.get('/:restaurant_id/edit', (req, res) => {
 
 // UPDATE function
 router.put('/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
-  const editedRestaurant = Object.assign({ _id: id }, req.body)
+  const userId = req.user._id
+  const _id = req.params.restaurant_id
+  const editedRestaurant = Object.assign({ _id }, req.body)
 
   let validationError = false
   if (!restaurantValidation(editedRestaurant)) {
@@ -78,21 +84,23 @@ router.put('/:restaurant_id', (req, res) => {
     validationError = true
     res.render('edit', { restaurant: editedRestaurant, validationError })
   } else {
-    return Restaurant.findById(id)
+    return Restaurant.findOne({ _id, userId })
       .then(restaurant => {
+        console.log(restaurant)
         Object.assign(restaurant, editedRestaurant)
         return restaurant.save()
       })
-      .then(() => res.redirect(`/restaurants/${id}`))
+      .then(() => res.redirect(`/restaurants/${_id}`))
       .catch(err => console.log(err))
   }
 })
 
 // DELETE function
 router.delete('/:restaurant_id', (req, res) => {
-  const id = req.params.restaurant_id
+  const userId = req.user._id
+  const _id = req.params.restaurant_id
 
-  return Restaurant.findById(id)
+  return Restaurant.findOne({ _id, userId })
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
@@ -104,7 +112,7 @@ function restaurantValidation(restaurant) {
   // Required validation
   for (const key in restaurant) {
     if (key !== 'name_en') {
-      if (!restaurant[key].length) return false
+      if (!restaurant[key]) return false
     }
   }
   // URL validation
