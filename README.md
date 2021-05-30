@@ -1,7 +1,7 @@
 # 簡易餐廳清單
 利用Node.js + Express打造的美食餐廳網站
 ![login image](https://github.com/chriszychen/ac_restaurant-list/blob/main/public/image/login.PNG)
-![index image](https://github.com/chriszychen/ac_restaurant-list/blob/main/public/image/index.PNG)
+![index image](https://github.com/chriszychen/ac_restaurant-list/blob/main/public/image/index_new.PNG)
 ## Features - 專案功能描述
 1. 可以使用自訂名字、Email和密碼進行註冊
 2. 可以使用註冊好的Email或是使用Facebook進行登入
@@ -36,8 +36,9 @@ npm i nodemon
 ```
 
 4.啟動MongoDB資料庫<br/>
+5.修改.env.example檔名為.env並將自己的Facebook App ID和Facebook App Secret填入後存檔<br/>
 
-5.啟動伺服器
+6.啟動伺服器
 ```
 npm run dev
 ```
@@ -45,8 +46,8 @@ npm run dev
 終端機顯示 ```The server is listening on http://localhost:3000``` 代表伺服器成功啟動<br/>
 顯示 ```mongodb connected!``` 代表伺服器成功與資料庫連接 <br/>
 <br/>
-6.新增種子資料
+7.新增種子資料
 ```
 npm run seed
 ```
-終端機出現 ```Seeder Done!``` 後即可至瀏覽器網址輸入 http://localhost:3000 瀏覽專案功能
+終端機出現 ```Seeder Done.``` 後即可至瀏覽器網址輸入 http://localhost:3000 瀏覽專案功能
