@@ -6,17 +6,14 @@ const Restaurant = require('../../models/restaurant')
 router.get('/search', (req, res) => {
   const userId = req.user._id
   const keyword = req.query.keyword.trim().toLowerCase()
-  Restaurant.find({ userId })
+  Restaurant.find({ $or: [{ name: { $regex: keyword, $options: 'i' }, userId }, { category: { $regex: keyword, $options: 'i' }, userId }] })
     .lean()
     .then(restaurants => {
       let noResult = false
-      const filteredRestaurants = restaurants.filter(restaurant => {
-        return restaurant.name.toLowerCase().includes(keyword) || restaurant.category.toLowerCase().includes(keyword)
-      })
-      if (filteredRestaurants.length === 0) {
+      if (restaurants.length === 0) {
         noResult = true
       }
-      res.render('index', { restaurants: filteredRestaurants, noResult, keyword: req.query.keyword })
+      res.render('index', { restaurants, noResult, keyword: req.query.keyword })
     })
     .catch(err => console.log(err))
 })
